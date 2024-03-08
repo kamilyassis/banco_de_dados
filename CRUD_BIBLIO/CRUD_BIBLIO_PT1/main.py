@@ -21,7 +21,8 @@ def menu():
         crud.create_livro(autor, titulo, num_copias_total, num_copias_disp, num_copias_alug)
 
     elif opcao == 2:
-        crud.read('livros')
+        read_dados = crud.read_table('livros')
+        print(read_dados)
     elif opcao == 3:
         at_ref = 'titulo'
         val_at_ref = input(('Insira o livro que deseja atualizar: '))
