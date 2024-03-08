@@ -20,7 +20,7 @@ def executar_query(query, valores=None):
 # CREATE
 
 def create_livro(autor, titulo, num_copias_total, num_copias_disp, num_copias_alug): #precisa de num_copias_total
-    comando = '''INSERT INTO livros(autor, titulo, num_copias_disp,
+    comando = '''INSERT INTO livros(autor, titulo, num_copias_total,num_copias_disp,
     num_copias_alug) VALUES (%s, %s,%s, %s, %s)'''
     executar_query(comando, (autor, titulo,num_copias_total, num_copias_disp, num_copias_alug))
     
@@ -36,11 +36,14 @@ def create_emprestimo(cpf_aluno, id_livro, data_inicio, data_fim):
 # READ
     
 def read_table(table):
-    comando = f'SELECT * FROM  {table}'
-    cursor.execute(comando)
-    resultado = cursor.fetchall()
-    return resultado
-
+    try:
+        cursor = conexao.cursor()
+        comando = f'SELECT * FROM biblioteca.{table}'
+        cursor.execute(comando)
+        resultado = cursor.fetchall()
+        return resultado
+    finally:
+        cursor.close()
 
 # UPDATE
 def update(table, at_change, val_at_change, at_ref, val_at_ref):
