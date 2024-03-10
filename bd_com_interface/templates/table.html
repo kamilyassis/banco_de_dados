@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Biblioteca</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="static\style.css">
+</head>
+
+<body>
+  <div class="gradient-background">
+
+    <div class="table_frame" >
+
+      <div class="table_border">
+
+        <div class="h1_repbtn_container" style="display: flex;">        
+          <h1 style="color: black;font-size: 40px; font-weight: bold;">Biblioteca</h1>
+          <button class="btn btn-ghost"style="margin-bottom: 25px;"><svg xmlns="http://www.w3.org/2000/svg" width="1.8rem" height="1.8rem" viewBox="0 0 32 32"><path fill="#434242" d="M10 18h8v2h-8zm0-5h12v2H10zm0 10h5v2h-5z"/><path fill="#434242" d="M25 5h-3V4a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v1H7a2 2 0 0 0-2 2v21a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2M12 4h8v4h-8Zm13 24H7V7h3v3h12V7h3Z"/></svg>
+          </button>
+        </div>
+
+
+        
+        <div class="search_bar">
+        <label class="input input-bordered flex items-center gap-2" style="width: 100%;" >
+          <input type="text" class="grow" placeholder="Search" style/>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" /></svg>
+        </label>
+        <button class="btn btn-neutral" class="search_btn" style="margin-bottom: 25px;">Search</button>
+        </div>
+
+        {% if data %}
+
+        <div class="table_container">
+
+         <table class="table" border="1">
+          <thead>
+
+            <tr>
+              <th scope="col/" style="color: black;">id_livro</th>
+              <th scope="col" style="color: black;">Autor</th>
+              <th scope="col"style="color: black;">Título</th>
+              <th scope="col"style="color: black;">Gênero</th>
+              <th scope="col"style="color: black;">Tools</th>
+
+            </tr>
+          </thead>
+          <tbody >
+            {% for rows in data %}
+            <tr>
+              <td>{{rows.id_livro}}</td>
+              <td>{{rows.autor}}</td>
+              <td>{{rows.titulo}}</td>
+              <td>{{rows.genero}}</td>
+              <td>
+                <button class="btn btn-square btn-ghost" class="add_btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1.8rem" height="1.8rem" viewBox="0 0 24 24"><path fill="none" stroke="#434242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 14v1a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-6m-3-3H7m0 0H4m3 0V5m0 3v3"/></svg>
+                </button>
+                <button class="btn btn-square btn-ghost" class="edit_btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1.8rem" height="1.8rem" viewBox="0 0 24 24"><path fill="#434242" d="M15.748 2.947a2 2 0 0 1 2.828 0l2.475 2.475a2 2 0 0 1 0 2.829L9.158 20.144l-6.38 1.076l1.077-6.38zm-.229 3.057l2.475 2.475l1.643-1.643l-2.475-2.474zm1.06 3.89l-2.474-2.475l-8.384 8.384l-.503 2.977l2.977-.502z"/></svg>
+                </button>
+                <button class="btn btn-square btn-ghost" class="remove_btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem" viewBox="0 0 16 16"><path fill="#434242" fill-rule="evenodd" d="M5.75 3V1.5h4.5V3zm-1.5 0V1a1 1 0 0 1 1-1h5.5a1 1 0 0 1 1 1v2h2.5a.75.75 0 0 1 0 1.5h-.365l-.743 9.653A2 2 0 0 1 11.148 16H4.852a2 2 0 0 1-1.994-1.847L2.115 4.5H1.75a.75.75 0 0 1 0-1.5zm-.63 1.5h8.76l-.734 9.538a.5.5 0 0 1-.498.462H4.852a.5.5 0 0 1-.498-.462z" clip-rule="evenodd"/></svg>
+                </button>
+              </td>
+
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table> 
+        </div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <p>No results found.</p>
+  {% endif %}
+
+</body>
+
+</html>
