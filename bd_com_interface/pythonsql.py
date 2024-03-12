@@ -1,9 +1,10 @@
 import mysql.connector
-from flask import Flask, render_template, request
+from flask import Flask, render_template, jsonify, request
+
+
+
 
 app = Flask(__name__)
-
-
 
 conexao = mysql.connector.connect(
     host='localhost',
@@ -15,23 +16,6 @@ conexao = mysql.connector.connect(
 
 @app.route('/')
 
-@app.route('/search')
-def search():
-    q = request.args.get('q')
-    print(q)
-
-    if q:
-        cursor = conexao.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM livro WHERE nome LIKE %s", (f'%{q}%',))
-        results = cursor.fetchall()
-        return render_template('search.html', data=results)
-        
-# @app.route('/search', methods=['GET', 'POST'])
-
-# def exibir_por_nome():
-
-#     cursor = conexao.cursor(dictionary=True)
-#     output = cursor.execute("SELECT  FROM livro ORDER BY nome")
 
 def exibir():
     cursor = conexao.cursor(dictionary=True)
@@ -40,6 +24,25 @@ def exibir():
     rows = cursor.fetchall()
     
     return render_template('table.html', data=rows)
+        
+@app.route('/api/search', methods=['GET'])
+
+def search():
+    try:
+        nome_livro = request.args.get('nome_livro')
+        cursor = conexao.cursor(dictionary=True)
+        cursor.execute('SELECT * FROM livro WHERE titulo = %s', (nome_livro,))
+        livro = cursor.fetchall()
+
+        if livro:
+            return render_template('search.html', data=livro)
+        else:
+            print(f"Livro '{nome_livro}' não encontrado.")
+    except mysql.connector.Error as err:
+        print(f"Erro ao buscar o livro: {err}")
+
+
+
 
 
 if __name__ == '__main__':
