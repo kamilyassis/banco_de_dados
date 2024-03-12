@@ -1,4 +1,5 @@
-import CRUD_BIBLIO_PT1.conexao_mysql as conexao_mysql
+import mysql.connector
+import conexao_mysql 
 
 conexao = conexao_mysql.conexao()
 cursor = conexao.cursor()
@@ -6,33 +7,12 @@ cursor = conexao.cursor()
 comando_tabela_livros = '''
 CREATE TABLE livros (
     id_livro INT AUTO_INCREMENT PRIMARY KEY,
-    autor VARCHAR(100) NOT NULL,
     titulo VARCHAR(100) NOT NULL,
-    num_copias_total INT NOT NULL,
-    num_copias_disp INT NOT NULL,
-    num_copias_alug INT NOT NULL
+    autor VARCHAR(100) NOT NULL,
+    genero VARCHAR(100) NOT NULL
 )
 
 '''
-
-comando_tabela_alunos = '''
-CREATE TABLE alunos (
-    cpf INT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    curso VARCHAR(100) NOT NULL
-)
-
-'''
-
-comando_tabela_emprestimos = '''
-CREATE TABLE emprestimos (
-    cpf_aluno INT,
-    id_livro INT,
-    FOREIGN KEY (id_livro) REFERENCES livros(id_livro),
-    FOREIGN KEY (cpf_aluno) REFERENCES alunos(cpf),
-    data_inicio DATETIME NOT NULL,
-    data_fim DATETIME NOT NULL
-)'''
 
 def alterar_tabela(tabela, old_name, new_name, type):
     comando_alterar_coluna = f'''ALTER TABLE {tabela}
@@ -41,12 +21,27 @@ def alterar_tabela(tabela, old_name, new_name, type):
     conexao.commit()
 
 def criar_tabela(comando):
-    cursor.execute(comando)
-    conexao.commit()
+    try:
+        cursor.execute(comando)
+        conexao.commit()
+        print("Tabela criada com sucesso!")
+    except mysql.connector.Error as err: 
+        if err.errno == mysql.connector.errorcode.ER_TABLE_EXISTS_ERROR:
+            print('A tabela já existe')
+        else:
+            print(err.msg)
 
-#criar_tabela(comando_tabela_livros)
-#criar_tabela(comando_tabela_alunos)
-#criar_tabela(comando_tabela_emprestimos)
+def dropar_tabela(nome_tabela):
+    try:
+        cursor.execute(f"DROP TABLE IF EXISTS {nome_tabela}")
+        conexao.commit()
+        print(f"Tabela {nome_tabela} dropada com sucesso!")
+    except mysql.connector.Error as err:
+        print(f"Erro ao dropar a tabela: {err}")
+#testes
+criar_tabela(comando_tabela_livros)
+#dropar_tabela('livros')
+
 
 cursor.close()
 conexao.close()

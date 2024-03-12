@@ -1,4 +1,4 @@
-import crud
+import crud as crud
 
 
 def menu():
@@ -15,10 +15,8 @@ def menu():
     if opcao == 1:
         titulo = input(('Insira o nome do livro: '))
         autor = input(('Insira o nome do Autor: '))
-        num_copias_total = int(input(('Insira o nome do Cópias totais: ')))
-        num_copias_disp = int(input(('Insira o nome do Cópias disponíveis: ')))
-        num_copias_alug = int(input(('Insira o nome do Cópias alugadas: ')))
-        crud.create_livro(autor, titulo, num_copias_total, num_copias_disp, num_copias_alug)
+        genero = input(('Insira o gênero: '))
+        crud.create_livro(autor, titulo, genero)
 
     elif opcao == 2:
         read_dados = crud.read_table('livros')
