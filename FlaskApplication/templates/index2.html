@@ -1,92 +1,64 @@
 <!DOCTYPE html>
-<div>
+<html lang="en">
 <head>
-    <title>Biblioteca de Alexandria</title>
-    <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
-    <link rel="shortcut icon" href="{{url_for('static',filename='library2.png')}}">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Livros</title>
 </head>
+<body>
+    <h1>Lista de Livros</h1>
 
-<div>
-    {% block body %}
-    <div class="container">
-        <div class="card text-center">
-            <div class="card-body">
-                <h1 class="card-title">Python Flask CRUD</h1>
-            </div>
-        </div>
+    <!-- Tabela de livros -->
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Autor</th>
+            <th>Título</th>
+            <th>Gênero</th>
+        </tr>
+    
+    {% for rows in data %}
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 d-flex justify-content-between align-items-center">
-                    <h2>Lista de Livros</h2>
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#mymodal">Adicionar Livro</button>
-                </div>
-            </div>
+<tr>
+    <td>{{rows[0]}}</td>
+    <td>{{rows[1]}}</td>
+    <td>{{rows[2]}}</td>
+    <td>{{rows[3]}}</td>
+</tr>
+{% endfor %}
+</table>
 
-            <table class="table table-striped">
-                <tr>
-                    <th>Serial</th>
-                    <th>Título</th>
-                    <th>Autor</th>
-                    <th>Gênero</th>
-                    <th>Action</th>
-                </tr>
-                <tr>
-                    <td>01</td>
-                    <td>Misery</td>
-                    <td>Stephen King</td>
-                    <td>Terror</td>
-                    <td>
-                        <a href="" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit">Edit</a>
-                        <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Tem certeza que quer deletar?')">Delete</a>
-                    </td>
-                </tr>
-            </table>
-        </div>
 
-        <div id="mymodal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Inserir dado</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form action="" method="POST">
-                            <div class="form-group">
-                                <label>Título</label>
-                                <input type="text" class="form-control" name="name" required="1">
-                            </div>
-                            <div class="form-group">
-                                <label>Autor</label>
-                                <input type="text" class="form-control" name="name" required="1">
-                            </div>
-                            <div class="form-group">
-                                <label>Gênero</label>
-                                <input type="text" class="form-control" name="name" required="1">
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-primary" type="submit">Insert Data</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-    {% endblock %}
 
-    <div class="card">
-        <div class="card-body d-flex justify-content-between">
-            <h3>Nois eh foda</h3>
-            <span>Marcelo Yuri dará 10</span>
-        </div>
-    </div>
 
-    <script type="text/javascript" src="{{url_for('static',filename='js/jquery-3.7.1.min.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+
+<!-- Mensagem de sucesso -->
+{%if added %}
+<p>Livro adicionado com sucesso!</p>
+{% endif %}
+
+<!-- Adding livro -->
+<h2>Adicionar Livro</h2>
+
+<form id = "formulario-livro" action = "adicionar_livro" method="POST">
+    <label for="titulo">Titulo</label>
+    <input type="text" id="titulo" name="titulo" required><br><br>
+    
+    <label for="autor">Autor</label>
+    <input type="text" id="autor" name="autor" required><br><br>
+
+    <label for="genero">Genero</label>
+    <input type="text" id="genero" name="genero" required><br><br>
+
+    <button type = "submit">Adicionar Livro</button>
+</form>
+
+<!-- Elemento para exibir a mensagem de pop-up -->
+<div id="mensagem-popup" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid black; border-radius: 5px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); z-index: 9999;"></div>
+
+
+
+<script src="static/js/script.js"></script>
 </body>
 </html>

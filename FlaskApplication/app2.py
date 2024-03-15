@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for,jsonify
+from flask import Flask, render_template, request, redirect, url_for
 import pymysql
 #from flask_sqlalchemy import SQLAlchemy
 
@@ -23,11 +23,11 @@ def add_livro():
         livro_existente = cursor.fetchone()
 
         if livro_existente:
-            return jsonify({'mensagem':'Livro já existente'})
+            return redirect(url_for('exibir_mensagem',mensagem='livro_existente'))
         
         cursor.execute("INSERT INTO livros(titulo,autor,genero) VALUES (%s,%s,%s)",(titulo,autor,genero)) 
         conexao.commit()
-        return jsonify({'redirect':url_for('exibir'),'mensagem':'Livro cadastrado com sucesso'})
+        return redirect(url_for('exibir_mensagem',mensagem='livro_adicionado'))
 
 @app.route('/')
 def exibir():
@@ -35,7 +35,9 @@ def exibir():
     rows = cursor.fetchall()
     return render_template('index2.html', data=rows)
 
-
+@app.route('/mensagem/<mensagem>')
+def exibir_mensagem(mensagem):
+    return render_template('index2.html',mensagem=mensagem)
 
     
 if __name__ == '__main__':

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensagem</title>
+
+    <script>
+        // Função para exibir pop-up com a mensagem
+        function exibirPopup(mensagem) {
+            alert(mensagem); // Exibe o pop-up com a mensagem
+        }
+
+        // Chama a função ao carregar a página para exibir o pop-up automaticamente
+        window.onload = function() {
+            exibirPopup("{{ mensagem }}"); // Substitui {{ mensagem }} com a mensagem passada do Flask
+        };
+    </script>
+</head>
+
+</html>
