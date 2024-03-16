@@ -41,9 +41,43 @@ def search():
     except mysql.connector.Error as err:
         print(f"Erro ao buscar o livro: {err}")
 
+@app.route('/api/delete', methods=['POST'])
 
+def delete():
+    try:
+        data = request.json
+        id_deletado = data['id_deletado']
+        cursor = conexao.cursor() 
+        cursor.execute('DELETE FROM livro WHERE id_livro = %s', (id_deletado,))
+        conexao.commit()
+        return jsonify(success=True)
+    except mysql.connector.Error as err:
+        print(f"Erro ao deletar o livro: {err}")
+        return jsonify(success=False, error=str(err))
 
-
+@app.route('/api/update/<int:id_livro>', methods=['POST'])
+def update_livro(id_livro):
+    autor = request.form['autor']
+    titulo = request.form['titulo']
+    genero = request.form['genero']
+    
+    cursor = conexao.cursor(dictionary=True)
+    try:
+        cursor.execute(
+            "UPDATE livro SET autor = %s, titulo = %s, genero = %s WHERE id_livro = %s",
+            (autor, titulo, genero, id_livro)
+        )
+        conexao.commit()
+        cursor.close()
+        conexao.close()
+        
+        # Retornar uma resposta de sucesso
+        return jsonify({'success': True, 'message': 'Livro atualizado com sucesso'})
+    except mysql.connector.Error as err:
+        print(f"Erro ao atualizar o livro: {err}")
+        cursor.close()
+        # Retornar uma resposta de erro
+        return jsonify({'success': False, 'message': 'Erro ao atualizar o livro'})
 
 if __name__ == '__main__':
     app.run(debug=True)
