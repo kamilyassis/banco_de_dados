@@ -1,0 +1,114 @@
+#python
+
+import pymysql
+from flask import Flask, jsonify, redirect, render_template, request, url_for
+
+#from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = '39*72p16lf'
+app.config['MYSQL_DB'] = 'biblioteca'
+
+
+conexao = pymysql.connect(host=app.config['MYSQL_HOST'], user=app.config['MYSQL_USER'],
+                password=app.config['MYSQL_PASSWORD'], db=app.config['MYSQL_DB'])
+cursor = conexao.cursor()
+
+@app.route('/adicionar_livro',methods=['POST'])
+def add_livro():
+    mensagem = 'erro em adicionar livro' 
+    #inicioalizei a variavel para não dar erro no retorno
+    if request.method == 'POST':
+        titulo = request.form['titulo']
+        autor = request.form['autor']
+        genero = request.form['genero']
+        cursor.execute("SELECT * FROM livros WHERE titulo = %s",titulo) 
+        livro_existente = cursor.fetchone()
+
+        if livro_existente:
+            mensagem = 'Livro já existe'
+        else:
+            # Adicionar o livro ao banco de dados
+            cursor.execute("INSERT INTO livros(titulo, autor, genero) VALUES (%s, %s, %s)", (titulo, autor, genero)) 
+            conexao.commit()
+            mensagem = 'Livro cadastrado com sucesso'
+
+    return jsonify({'mensagem': mensagem}), 200
+
+@app.route('/')
+def exibir():
+    cursor.execute("SELECT * FROM livros LIMIT 5")
+    rows = cursor.fetchall()
+    return render_template('index2.html', data=rows)
+
+#mudei _name_ e _main_ para __name__ e __main__
+if __name__ == '__main__':
+    app.run(debug=True)
+
+//js
+$(document).ready(function() {
+    $('#formulario-livro').submit(function(event) {
+        event.preventDefault(); // Evitar o envio padrão do formulário
+
+        var formData = new FormData(this);
+
+        fetch('/adicionar_livro', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            var mensagemBox = document.getElementById('mensagem-box');
+            var mensagemTexto = document.getElementById('mensagem-texto');
+            if (data.mensagem) {
+                mensagemTexto.textContent = data.mensagem;
+                mensagemBox.classList.remove('alert-danger');
+                mensagemBox.classList.add('alert-success');
+            } else {
+                mensagemTexto.textContent = 'Erro ao adicionar livro.';
+                mensagemBox.classList.remove('alert-success');
+                mensagemBox.classList.add('alert-danger');
+            }
+            mensagemBox.style.display = 'block';
+            $('#modalAdicionarLivro').modal('hide'); // Fechar o modal após processar o formulário
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+        });
+    });
+});
+
+<!-- html -->
+$(document).ready(function() {
+    $('#formulario-livro').submit(function(event) {
+        event.preventDefault(); // Evitar o envio padrão do formulário
+
+        var formData = new FormData(this);
+
+        fetch('/adicionar_livro', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            var mensagemBox = document.getElementById('mensagem-box');
+            var mensagemTexto = document.getElementById('mensagem-texto');
+            if (data.mensagem) {
+                mensagemTexto.textContent = data.mensagem;
+                mensagemBox.classList.remove('alert-danger');
+                mensagemBox.classList.add('alert-success');
+            } else {
+                mensagemTexto.textContent = 'Erro ao adicionar livro.';
+                mensagemBox.classList.remove('alert-success');
+                mensagemBox.classList.add('alert-danger');
+            }
+            mensagemBox.style.display = 'block';
+            $('#modalAdicionarLivro').modal('hide'); // Fechar o modal após processar o formulário
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+        });
+    });
+});
