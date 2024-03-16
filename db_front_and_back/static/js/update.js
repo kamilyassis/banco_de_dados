@@ -1,18 +1,18 @@
+// Para abrir modal
 function openModal(idLivro, autor, titulo, genero) {
     document.getElementById('idLivroInput').value = idLivro;
     document.getElementById('autorInput').value = autor;
     document.getElementById('tituloInput').value = titulo;
     document.getElementById('generoInput').value = genero;
-    document.getElementById('updateModal').classList.add('modal-open');
+    
+    const modal = document.getElementById('updateModal');
+    modal.classList.add("modal-open");
   }
   
-  function closeModal() {
-    document.getElementById('updateModal').classList.remove('modal-open');
-  }
-  
-  function updateLivro() {
+   function updateLivro() {
     var form = document.getElementById('updateForm');
-    var formData = new(form);
+    console.log(form); 
+    var formData = new FormData(form);
     var idLivro = formData.get('id_livro');
   
     fetch('/api/update/' + idLivro, {
@@ -33,3 +33,8 @@ function openModal(idLivro, autor, titulo, genero) {
       console.error('Error:', error);
     });
   }
+    // Para fechar modal
+function closeModal() {
+    const modal = document.getElementById('updateModal');
+    modal.classList.remove("modal-open");
+    }
