@@ -15,6 +15,7 @@ cursor = conexao.cursor()
 
 @app.route('/adicionar_livro',methods=['POST'])
 def add_livro():
+    mensagem = 'erro em adicionar livro'
     if request.method == 'POST':
         titulo = request.form['titulo']
         autor = request.form['autor']
@@ -23,15 +24,18 @@ def add_livro():
         livro_existente = cursor.fetchone()
 
         if livro_existente:
-            return jsonify({'mensagem':'Livro já existente'})
+            mensagem = 'Livro já existe'
+        else:
+            # Adicionar o livro ao banco de dados
+            cursor.execute("INSERT INTO livros(titulo, autor, genero) VALUES (%s, %s, %s)", (titulo, autor, genero)) 
+            conexao.commit()
+            mensagem = 'Livro cadastrado com sucesso'
         
-        cursor.execute("INSERT INTO livros(titulo,autor,genero) VALUES (%s,%s,%s)",(titulo,autor,genero)) 
-        conexao.commit()
-        return jsonify({'redirect':url_for('exibir'),'mensagem':'Livro cadastrado com sucesso'})
+        return jsonify({'redirect':url_for('exibir'),'mensagem':mensagem}), 200
 
 @app.route('/')
 def exibir():
-    cursor.execute("SELECT * FROM livros")
+    cursor.execute("SELECT * FROM livros LIMIT 5")
     rows = cursor.fetchall()
     return render_template('index2.html', data=rows)
 

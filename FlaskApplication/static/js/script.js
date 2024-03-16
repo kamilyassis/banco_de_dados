@@ -1,34 +1,31 @@
-function exibirPopup(mensagem){
-    var popupElement = document.getElementById('mensagem-popup');
-    popupElement.innerHTML = mensagem; // Define o conteúdo da mensagem no pop-up
-    popupElement.style.display = 'block'; // Exibe o pop-up
+$(document).ready(function() {
+    $('#formulario-livro').submit(function(event) {
+        event.preventDefault(); // Evitar o envio padrão do formulário
 
-    // Define um timer para esconder o pop-up após alguns segundos
-    setTimeout(function() {
-        popupElement.style.display = 'none'; // Esconde o pop-up após 3 segundos
-    }, 3000);
-}
+        var formData = new FormData(this);
 
-document.getElementById('formulario-livro').addEventListener('submit',function(event){
-    event.preventDefault(); // Evitar o envio padrão do formulário
-
-    var formulario = this;
-    var formData = new  FormData(formulario);
-
-    fetch('/adicionar_livro',{
-        method:'POST',
-        body: formData
-    })
-
-    .then(response => response.json())
-    .then(data => {
-        if (data.mensagem){
-            exibirPopup(data.mensagem)
-        } else if (data.redirect){
-            window.location.href = data.redirect;
-        }
-    })
-    .catch(error => {
-        console.error('Erro:', error);
+        fetch('/adicionar_livro', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            var mensagemBox = document.getElementById('mensagem-box');
+            var mensagemTexto = document.getElementById('mensagem-texto');
+            if (data.mensagem) {
+                mensagemTexto.textContent = data.mensagem;
+                mensagemBox.classList.remove('alert-danger');
+                mensagemBox.classList.add('alert-success');
+            } else {
+                mensagemTexto.textContent = 'Erro ao adicionar livro.';
+                mensagemBox.classList.remove('alert-success');
+                mensagemBox.classList.add('alert-danger');
+            }
+            mensagemBox.style.display = 'block';
+            $('#modalAdicionarLivro').modal('hide'); // Fechar o modal após processar o formulário
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+        });
     });
 });

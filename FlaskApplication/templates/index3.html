@@ -16,7 +16,7 @@
             Adicionar Livro
         </button>
 
-        <div id="mensagem-principal" class="alert alert-success" style="display: none;"></div>
+      <!-- Removi o box de exibir mensagens daqui para integrar na tabela -->
       
         <!-- Tabela de livros -->
         <table class="table">
@@ -76,34 +76,19 @@
                     </form>
                 </div>
               
-              <!-- tentativa mensagens pop-up -->
-              <div class="modal fade" id="mensagemModal" tabindex="-1" role="dialog" aria-labelledby="mensagemModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="mensagemModalLabel">Alertaa</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
+                <!-- a mensagem de alerta (onde fiz as mudanças) -->
+                <div class="modal-footer">
+                    <div id="mensagem-box" class="alert" role="alert" style="display: none;">
+                        <p id="mensagem-texto"></p>
                     </div>
-                    <div class="modal-body">
-                      <p id="mensagem-texto"></p>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    </div>
-                  </div>
                 </div>
-              </div>
-
-
-
-
-
-<script src="static/js/script2.js"></script>
-<!-- Scripts do Bootstrap -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            </div>
+        </div>
+    </div>
+    <script src="static/js/script2.js"></script>
+    <!-- Scripts do Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
