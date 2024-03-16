@@ -24,6 +24,29 @@ def exibir():
     rows = cursor.fetchall()
     
     return render_template('table.html', data=rows)
+
+@app.route('api/adicionar_livro',methods=['POST'])
+def adicionar_livro():
+    cursor = conexao.cursor(dictionary=True)
+    if request.method == 'POST':
+        titulo = request.form['titulo']
+        autor = request.form['autor']
+        genero = request.form['genero']
+
+        cursor.execute("SELECT * FROM livros WHERE titulo = %s",titulo) 
+        livro_existente = cursor.fetchone()
+        
+        if livro_existente:
+          cursor.close()
+          conexao.close()
+          return jsonify({'success': False, 'message': 'Livro já cadastrado'})
+        else:
+          cursor.execute("INSERT INTO livros (titulo, autor, genero) VALUES (%s, %s, %s)", (titulo, autor, genero))
+          conexao.commit()
+          cursor.close()
+          conexao.close()
+          return jsonify({'success': True, 'message': 'Livro cadastrado com sucesso'})
+
         
 @app.route('/api/search', methods=['GET'])
 
