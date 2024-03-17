@@ -37,7 +37,7 @@ def add_livro():
 def exibir():
     cursor.execute("SELECT * FROM livros LIMIT 5")
     rows = cursor.fetchall()
-    return render_template('index2.html', data=rows)
+    return render_template('index3.html', data=rows)
 
 
 

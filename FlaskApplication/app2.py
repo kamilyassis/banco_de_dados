@@ -33,7 +33,7 @@ def add_livro():
 def exibir():
     cursor.execute("SELECT * FROM livros")
     rows = cursor.fetchall()
-    return render_template('index2.html', data=rows)
+    return render_template('2.html', data=rows)
 
 @app.route('/mensagem/<mensagem>')
 def exibir_mensagem(mensagem):
